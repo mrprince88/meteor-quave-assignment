@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
 import { People } from './people';
-import { Activities } from '../activities/activities';
 
 Meteor.methods({
   'people.getAll'() {

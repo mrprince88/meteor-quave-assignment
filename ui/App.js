@@ -9,7 +9,6 @@ export const App = () => {
 
   useEffect(() => {
     Meteor.call('communities.getAll', (err, res) => {
-      console.log('hello');
       if (err) console.log(err);
       else setCommunities(res);
     });
