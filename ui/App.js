@@ -66,14 +66,16 @@ export const App = () => {
               <tr key={person._id}>
                 <td className="border px-4 py-2">{person.firstName}</td>
                 <td className="border px-4 py-2">{person.lastName}</td>
-                <td className="border px-4 py-2">{person.title}</td>
-                <td className="border px-4 py-2">{person.companyName}</td>
+                <td className="border px-4 py-2">{person.title ?? '-'}</td>
+                <td className="border px-4 py-2">
+                  {person.companyName ?? '-'}
+                </td>
                 <td className="border px-4 py-2">
                   <button
                     className="bg-blue-400 p-2 rounded ml-2"
                     onClick={() => handleButtonClick(person._id)}
                   >
-                    {person?.activity?.checkedIn ? 'Check out' : 'Check in'}
+                    {person.activity?.checkedIn ? 'Check out' : 'Check in'}
                   </button>
                 </td>
               </tr>
