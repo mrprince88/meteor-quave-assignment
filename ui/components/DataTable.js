@@ -31,7 +31,7 @@ export const DataTable = ({ people }) => {
   };
 
   return (
-    <Table className="auto">
+    <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Fist Name</TableHead>

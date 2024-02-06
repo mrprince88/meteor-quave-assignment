@@ -7,6 +7,7 @@ import { People } from '../people/people';
 import { DataTable } from '../ui/components/DataTable';
 import SelectComponent from '../ui/components/ui/Select';
 import PaginationComponent from '../ui/components/ui/Pagination';
+import Statistics from './components/Statistics';
 
 const PAGE_SIZE = 10;
 
@@ -69,7 +70,7 @@ export const App = () => {
         {Texts.HOME_TITLE}
       </h1>
 
-      <div className="flex justify-center flex-col items-center">
+      <div className="p-10">
         <SelectComponent
           value={selectedCommunity}
           onValueChange={value => setSelectedCommunity(value)}
@@ -77,24 +78,16 @@ export const App = () => {
           placeholder="Select a community"
         />
 
-        {/* <h2 className="text-2xl mb-5">
-          People in event: {getPeopleCheckedIn(people)}
-        </h2>
-        <h2 className="text-xl mb-5">
-          People by Company: {getPeopleByCompany(people)}
-        </h2>
-        <h2 className="text-xl mb-5">
-          People not checked in: {getPeopleNotCheckedIn(people)}
-        </h2> */}
-
-        <DataTable people={people} />
-        <PaginationComponent
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          pageSize={PAGE_SIZE}
-          itemsSize={people.length}
-        />
+        <Statistics communityId={selectedCommunity} />
       </div>
+
+      <DataTable people={people} />
+      <PaginationComponent
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        pageSize={PAGE_SIZE}
+        itemsSize={people.length}
+      />
     </>
   );
 };
