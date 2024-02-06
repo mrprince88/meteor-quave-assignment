@@ -145,3 +145,25 @@ export {
   SelectScrollUpButton,
   SelectScrollDownButton,
 };
+
+export default function SelectComponent({
+  value,
+  onValueChange,
+  options,
+  placeholder,
+}) {
+  return (
+    <Select value={value} onValueChange={onValueChange}>
+      <SelectTrigger className="w-[180px] mb-10">
+        <SelectValue placeholder={placeholder} />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map(option => (
+          <SelectItem key={option._id} value={option._id}>
+            {option.name}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}

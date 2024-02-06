@@ -83,3 +83,32 @@ export {
   PaginationNext,
   PaginationPrevious,
 };
+
+export default function PaginationComponent({
+  currentPage,
+  setCurrentPage,
+  pageSize,
+  itemsSize,
+}) {
+  return (
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink>{currentPage}</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={itemsSize < pageSize}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  );
+}
