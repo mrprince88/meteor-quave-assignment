@@ -31,8 +31,8 @@ export const DataTable = ({ people }) => {
   };
 
   return (
-    <Table>
-      <TableHeader>
+    <Table className="table-fixed overflow-scroll">
+      <TableHeader className="bg-gray-200">
         <TableRow>
           <TableHead>Fist Name</TableHead>
           <TableHead>Last Name</TableHead>
