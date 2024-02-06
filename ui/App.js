@@ -71,10 +71,6 @@ export const App = () => {
   const handleCommunityChange = event => {
     const communityId = event.target.value;
     setSelectedCommunity(communityId);
-    Meteor.call('people.getByCommunityId', communityId, (err, res) => {
-      if (err) console.log(err);
-      else setPeople(res);
-    });
   };
 
   const handleButtonClick = (personId, action) => {
@@ -90,6 +86,11 @@ export const App = () => {
       });
     }
   };
+
+  if (!communities.length) {
+    console.log('Loading...');
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="w-full">
@@ -110,7 +111,7 @@ export const App = () => {
           ))}
         </select>
 
-        <h2 className="text-2xl mb-5">
+        {/* <h2 className="text-2xl mb-5">
           People in event: {getPeopleCheckedIn(people)}
         </h2>
         <h2 className="text-xl mb-5">
@@ -118,7 +119,7 @@ export const App = () => {
         </h2>
         <h2 className="text-xl mb-5">
           People not checked in: {getPeopleNotCheckedIn(people)}
-        </h2>
+        </h2> */}
 
         <table className="table-auto">
           <thead>
