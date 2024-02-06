@@ -79,15 +79,18 @@ export const App = () => {
         />
 
         <Statistics communityId={selectedCommunity} />
-      </div>
 
-      <DataTable people={people} />
-      <PaginationComponent
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        pageSize={PAGE_SIZE}
-        itemsSize={people.length}
-      />
+        <div className="pt-10">
+          <DataTable people={people} />
+        </div>
+
+        <PaginationComponent
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          pageSize={PAGE_SIZE}
+          itemsSize={people.length}
+        />
+      </div>
     </>
   );
 };
