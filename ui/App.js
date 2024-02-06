@@ -4,39 +4,46 @@ import { useState, useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 import { People } from '../people/people';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../ui/components/ui/Table';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/components/ui/Select';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '../ui/components/ui/Pagination';
 
-const getPeopleCheckedIn = people => {
-  return people.filter(person => person.lastCheckIn && !person.lastCheckOut)
-    .length;
-};
-
-const getPeopleByCompany = people => {
-  const companies = people.reduce((acc, person) => {
-    if (!acc[person.companyName]) {
-      acc[person.companyName] = 0;
-    }
-    acc[person.companyName] += 1;
-    return acc;
-  }, {});
-
-  return Object.keys(companies).map(company => (
-    <span key={company}>
-      {company} ({companies[company]}),
-    </span>
-  ));
-};
-
-const getPeopleNotCheckedIn = people => {
-  return people.filter(person => !person.lastCheckIn).length;
-};
+const PAGE_SIZE = 10;
 
 export const App = () => {
   const [communities, setCommunities] = useState([]);
   const [selectedCommunity, setSelectedCommunity] = useState('');
   const [people, setPeople] = useState([]);
+  const [buttonDisabled, setButtonDisabled] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    const peopleSubscription = Meteor.subscribe('people', selectedCommunity);
+    const peopleSubscription = Meteor.subscribe(
+      'people',
+      selectedCommunity,
+      currentPage,
+      PAGE_SIZE
+    );
 
     const computation = Tracker.autorun(
       () => {
@@ -56,7 +63,7 @@ export const App = () => {
       computation.stop();
       peopleSubscription.stop();
     };
-  }, [selectedCommunity]);
+  }, [selectedCommunity, currentPage]);
 
   useEffect(() => {
     Meteor.call('communities.getAll', (err, res) => {
@@ -68,12 +75,15 @@ export const App = () => {
     });
   }, []);
 
-  const handleCommunityChange = event => {
-    const communityId = event.target.value;
-    setSelectedCommunity(communityId);
+  const handleCommunityChange = value => {
+    setSelectedCommunity(value);
   };
 
   const handleButtonClick = (personId, action) => {
+    setButtonDisabled(personId);
+    setTimeout(() => {
+      setButtonDisabled('');
+    }, 5000);
     if (action === 'checkIn') {
       Meteor.call('people.checkIn', personId, (err, res) => {
         if (err) console.log(err);
@@ -93,23 +103,24 @@ export const App = () => {
   }
 
   return (
-    <div className="w-full">
+    <>
       <h1 className="text-4xl text-center p-10 font-semibold">
         {Texts.HOME_TITLE}
       </h1>
 
       <div className="flex justify-center flex-col items-center">
-        <select
-          onChange={handleCommunityChange}
-          value={selectedCommunity}
-          className="w-[200px] h-[40px] rounded border border-gray-300 mb-10"
-        >
-          {communities.map(community => (
-            <option key={community._id} value={community._id}>
-              {community.name}
-            </option>
-          ))}
-        </select>
+        <Select value={selectedCommunity} onValueChange={handleCommunityChange}>
+          <SelectTrigger className="w-[180px] mb-10">
+            <SelectValue placeholder="Select community" />
+          </SelectTrigger>
+          <SelectContent>
+            {communities.map(community => (
+              <SelectItem key={community._id} value={community._id}>
+                {community.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         {/* <h2 className="text-2xl mb-5">
           People in event: {getPeopleCheckedIn(people)}
@@ -121,36 +132,34 @@ export const App = () => {
           People not checked in: {getPeopleNotCheckedIn(people)}
         </h2> */}
 
-        <table className="table-auto">
-          <thead>
-            <tr className="bg-gray-300">
-              <th className="px-4 py-2">Fist Name</th>
-              <th className="px-4 py-2">Last Name</th>
-              <th className="px-4 py-2">Role</th>
-              <th className="px-4 py-2">Company</th>
-              <th className="px-4 py-2">Check in</th>
-              <th className="px-4 py-2">Check out</th>
-              <th className="px-4 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Fist Name</TableHead>
+              <TableHead>Last Name</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Company</TableHead>
+              <TableHead>Check in</TableHead>
+              <TableHead>Check out</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {people.map(person => (
-              <tr key={person._id}>
-                <td className="border px-4 py-2">{person.firstName}</td>
-                <td className="border px-4 py-2">{person.lastName}</td>
-                <td className="border px-4 py-2">{person.title ?? '-'}</td>
-                <td className="border px-4 py-2">
-                  {person.companyName ?? '-'}
-                </td>
-                <td className="border px-4 py-2">
+              <TableRow key={person._id}>
+                <TableCell>{person.firstName}</TableCell>
+                <TableCell>{person.lastName}</TableCell>
+                <TableCell>{person.title ?? '-'}</TableCell>
+                <TableCell>{person.companyName ?? '-'}</TableCell>
+                <TableCell>
                   {person.lastCheckIn ? person.lastCheckIn.toDateString() : '-'}
-                </td>
-                <td className="border px-4 py-2">
+                </TableCell>
+                <TableCell>
                   {person.lastCheckOut
                     ? person.lastCheckOut.toDateString()
                     : '-'}
-                </td>
-                <td className="border px-4 py-2">
+                </TableCell>
+                <TableCell>
                   <button
                     className="bg-blue-400 p-2 rounded ml-2 disabled:opacity-50"
                     onClick={() =>
@@ -159,16 +168,35 @@ export const App = () => {
                         person.lastCheckIn ? 'checkOut' : 'checkIn'
                       )
                     }
-                    disabled={person.lastCheckOut}
+                    disabled={buttonDisabled === person._id}
                   >
                     {person?.lastCheckIn ? 'Check out' : 'Check in'}
                   </button>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink>1</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={people.length < PAGE_SIZE}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
-    </div>
+    </>
   );
 };
