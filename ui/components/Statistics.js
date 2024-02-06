@@ -33,8 +33,9 @@ export default function Statistics({ communityId }) {
         People by company in the event right now:
         {Object.entries(peopleCheckedInByCompany).map(
           ([company, count], index) => (
-            <span key={company}>{`${index !== 0 &&
-              ', '}${company}: (${count})`}</span>
+            <span key={company}>{`${
+              index !== 0 ? ', ' : ' '
+            }${company} (${count})`}</span>
           )
         )}
       </h2>

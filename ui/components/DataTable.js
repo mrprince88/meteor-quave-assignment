@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -7,29 +7,9 @@ import {
   TableHeader,
   TableRow,
 } from './ui/Table';
-import { Meteor } from 'meteor/meteor';
+import ActionButton from './ActionButton';
 
 export const DataTable = ({ people }) => {
-  const [buttonDisabled, setButtonDisabled] = useState('');
-
-  const handleButtonClick = (personId, action) => {
-    setButtonDisabled(personId);
-    setTimeout(() => {
-      setButtonDisabled('');
-    }, 5000);
-    if (action === 'checkIn') {
-      Meteor.call('people.checkIn', personId, (err, res) => {
-        if (err) console.log(err);
-        else console.log(res);
-      });
-    } else {
-      Meteor.call('people.checkOut', personId, (err, res) => {
-        if (err) console.log(err);
-        else console.log(res);
-      });
-    }
-  };
-
   return (
     <Table className="table-fixed overflow-scroll">
       <TableHeader className="bg-gray-200">
@@ -57,18 +37,7 @@ export const DataTable = ({ people }) => {
               {person.lastCheckOut ? person.lastCheckOut.toDateString() : '-'}
             </TableCell>
             <TableCell>
-              <button
-                className="bg-blue-400 p-2 rounded ml-2 disabled:opacity-50"
-                onClick={() =>
-                  handleButtonClick(
-                    person._id,
-                    person.lastCheckIn ? 'checkOut' : 'checkIn'
-                  )
-                }
-                disabled={buttonDisabled === person._id}
-              >
-                {person?.lastCheckIn ? 'Check out' : 'Check in'}
-              </button>
+              <ActionButton person={person} />
             </TableCell>
           </TableRow>
         ))}
