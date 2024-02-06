@@ -27,7 +27,7 @@ export default function Statistics({ communityId }) {
   }, [communityId]);
 
   return (
-    <div>
+    <div className="text-2xl md:text-lg">
       <h2>People in the event right now: {peopleCheckedInCount}</h2>
       <h2>
         People by company in the event right now:
@@ -39,7 +39,7 @@ export default function Statistics({ communityId }) {
           )
         )}
       </h2>
-      <h2>People not checked-in:{peopleNotCheckedInCount}</h2>
+      <h2>People not checked-in: {peopleNotCheckedInCount}</h2>
     </div>
   );
 }

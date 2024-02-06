@@ -10,17 +10,26 @@ import {
 import ActionButton from './ActionButton';
 
 export const DataTable = ({ people }) => {
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+
   return (
     <Table className="table-fixed overflow-scroll">
       <TableHeader className="bg-gray-200">
         <TableRow>
-          <TableHead>Fist Name</TableHead>
-          <TableHead>Last Name</TableHead>
-          <TableHead>Role</TableHead>
-          <TableHead>Company</TableHead>
-          <TableHead>Check in</TableHead>
-          <TableHead>Check out</TableHead>
-          <TableHead>Actions</TableHead>
+          <TableHead className="w-[200px]">Fist Name</TableHead>
+          <TableHead className="w-[200px]">Last Name</TableHead>
+          <TableHead className="w-[200px]">Role</TableHead>
+          <TableHead className="w-[200px]">Company</TableHead>
+          <TableHead className="w-[200px]">Check in</TableHead>
+          <TableHead className="w-[200px]">Check out</TableHead>
+          <TableHead className="w-[200px]">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -31,10 +40,14 @@ export const DataTable = ({ people }) => {
             <TableCell>{person.title ?? '-'}</TableCell>
             <TableCell>{person.companyName ?? '-'}</TableCell>
             <TableCell>
-              {person.lastCheckIn ? person.lastCheckIn.toDateString() : '-'}
+              {/* convert date to MM/DD/YYYY HH:MM format */}
+
+              {person.lastCheckIn ? formatter.format(person.lastCheckIn) : '-'}
             </TableCell>
             <TableCell>
-              {person.lastCheckOut ? person.lastCheckOut.toDateString() : '-'}
+              {person.lastCheckOut
+                ? formatter.format(person.lastCheckOut)
+                : '-'}
             </TableCell>
             <TableCell>
               <ActionButton person={person} />
