@@ -7,39 +7,27 @@ Meteor.methods({
     return People.find({}).fetch();
   },
   'people.getByCommunityId'(communityId) {
-    return People.rawCollection()
-      .aggregate([
-        {
-          $match: {
-            communityId,
-          },
-        },
-        {
-          $lookup: {
-            from: 'activities',
-            localField: '_id',
-            foreignField: 'personId',
-            as: 'activities',
-          },
-        },
-        {
-          $sort: {
-            'activities.checkedIn': -1,
-          },
-        },
-        {
-          $project: {
-            _id: 1,
-            firstName: 1,
-            lastName: 1,
-            companyName: 1,
-            title: 1,
-            activity: {
-              $arrayElemAt: ['$activities', 0],
-            },
-          },
-        },
-      ])
-      .toArray();
+    return People.find({ communityId }).fetch();
+  },
+  'people.checkIn'(personId) {
+    if (People.findOne(personId).lastCheckIn) {
+      throw new Meteor.Error(
+        'already-checked-in',
+        'This person is already checked in'
+      );
+    }
+    return People.update(
+      { _id: personId },
+      { $set: { lastCheckIn: new Date() } }
+    );
+  },
+  'people.checkOut'(personId) {
+    if (!People.findOne(personId).lastCheckIn) {
+      throw new Meteor.Error('not-checked-in', 'This person is not checked in');
+    }
+    return People.update(
+      { _id: personId },
+      { $set: { lastCheckOut: new Date() } }
+    );
   },
 });

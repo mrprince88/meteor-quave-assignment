@@ -10,7 +10,10 @@ export const App = () => {
   useEffect(() => {
     Meteor.call('communities.getAll', (err, res) => {
       if (err) console.log(err);
-      else setCommunities(res);
+      else {
+        console.log(res);
+        setCommunities(res);
+      }
     });
   }, []);
 
@@ -19,16 +22,24 @@ export const App = () => {
     Meteor.call('people.getByCommunityId', communityId, (err, res) => {
       if (err) console.log(err);
       else {
+        console.log(res);
         setPeople(res);
       }
     });
   };
 
-  const handleButtonClick = personId => {
-    Meteor.call('activities.checkIn', personId, (err, res) => {
-      if (err) console.log(err);
-      else console.log(res);
-    });
+  const handleButtonClick = (personId, action) => {
+    if (action === 'checkIn') {
+      Meteor.call('people.checkIn', personId, (err, res) => {
+        if (err) console.log(err);
+        else console.log(res);
+      });
+    } else {
+      Meteor.call('people.checkOut', personId, (err, res) => {
+        if (err) console.log(err);
+        else console.log(res);
+      });
+    }
   };
 
   return (
@@ -57,6 +68,8 @@ export const App = () => {
               <th className="px-4 py-2">Last Name</th>
               <th className="px-4 py-2">Role</th>
               <th className="px-4 py-2">Company</th>
+              <th className="px-4 py-2">Check in</th>
+              <th className="px-4 py-2">Check out</th>
               <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
@@ -70,11 +83,25 @@ export const App = () => {
                   {person.companyName ?? '-'}
                 </td>
                 <td className="border px-4 py-2">
+                  {person.lastCheckIn ? person.lastCheckIn.toDateString() : '-'}
+                </td>
+                <td className="border px-4 py-2">
+                  {person.lastCheckOut
+                    ? person.lastCheckOut.toDateString()
+                    : '-'}
+                </td>
+                <td className="border px-4 py-2">
                   <button
-                    className="bg-blue-400 p-2 rounded ml-2"
-                    onClick={() => handleButtonClick(person._id)}
+                    className="bg-blue-400 p-2 rounded ml-2 disabled:opacity-50"
+                    onClick={() =>
+                      handleButtonClick(
+                        person._id,
+                        person.lastCheckIn ? 'checkOut' : 'checkIn'
+                      )
+                    }
+                    disabled={person.lastCheckOut}
                   >
-                    {person.activity?.checkedIn ? 'Check out' : 'Check in'}
+                    {person?.lastCheckIn ? 'Check out' : 'Check in'}
                   </button>
                 </td>
               </tr>
