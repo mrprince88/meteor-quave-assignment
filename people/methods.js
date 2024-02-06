@@ -2,6 +2,10 @@ import { Meteor } from 'meteor/meteor';
 
 import { People } from './people';
 
+// We define methods to interact with the People collection.
+// Here i thought it would bea good idea to add a separate collection for the check in and check out of the people.
+// But that quickly become cumbersome and i decided to add the check in and check out fields to the people collection itself.
+
 Meteor.methods({
   'people.getAll'() {
     return People.find({}).fetch();
