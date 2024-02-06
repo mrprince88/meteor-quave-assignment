@@ -2,29 +2,78 @@ import React from 'react';
 import { Texts } from '../infra/constants';
 import { useState, useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
+import { Tracker } from 'meteor/tracker';
+import { People } from '../people/people';
+
+const getPeopleCheckedIn = people => {
+  return people.filter(person => person.lastCheckIn && !person.lastCheckOut)
+    .length;
+};
+
+const getPeopleByCompany = people => {
+  const companies = people.reduce((acc, person) => {
+    if (!acc[person.companyName]) {
+      acc[person.companyName] = 0;
+    }
+    acc[person.companyName] += 1;
+    return acc;
+  }, {});
+
+  return Object.keys(companies).map(company => (
+    <span key={company}>
+      {company} ({companies[company]}),
+    </span>
+  ));
+};
+
+const getPeopleNotCheckedIn = people => {
+  return people.filter(person => !person.lastCheckIn).length;
+};
 
 export const App = () => {
   const [communities, setCommunities] = useState([]);
+  const [selectedCommunity, setSelectedCommunity] = useState('');
   const [people, setPeople] = useState([]);
+
+  useEffect(() => {
+    const peopleSubscription = Meteor.subscribe('people', selectedCommunity);
+
+    const computation = Tracker.autorun(
+      () => {
+        if (peopleSubscription.ready()) {
+          const people = People.find().fetch();
+          setPeople(people);
+        }
+      },
+      {
+        onError: err => {
+          console.log(err);
+        },
+      }
+    );
+
+    return () => {
+      computation.stop();
+      peopleSubscription.stop();
+    };
+  }, [selectedCommunity]);
 
   useEffect(() => {
     Meteor.call('communities.getAll', (err, res) => {
       if (err) console.log(err);
       else {
-        console.log(res);
         setCommunities(res);
+        setSelectedCommunity(res[0]?._id);
       }
     });
   }, []);
 
   const handleCommunityChange = event => {
     const communityId = event.target.value;
+    setSelectedCommunity(communityId);
     Meteor.call('people.getByCommunityId', communityId, (err, res) => {
       if (err) console.log(err);
-      else {
-        console.log(res);
-        setPeople(res);
-      }
+      else setPeople(res);
     });
   };
 
@@ -51,15 +100,25 @@ export const App = () => {
       <div className="flex justify-center flex-col items-center">
         <select
           onChange={handleCommunityChange}
+          value={selectedCommunity}
           className="w-[200px] h-[40px] rounded border border-gray-300 mb-10"
         >
-          <option value="">{Texts.SELECT_COMMUNITY}</option>
           {communities.map(community => (
             <option key={community._id} value={community._id}>
               {community.name}
             </option>
           ))}
         </select>
+
+        <h2 className="text-2xl mb-5">
+          People in event: {getPeopleCheckedIn(people)}
+        </h2>
+        <h2 className="text-xl mb-5">
+          People by Company: {getPeopleByCompany(people)}
+        </h2>
+        <h2 className="text-xl mb-5">
+          People not checked in: {getPeopleNotCheckedIn(people)}
+        </h2>
 
         <table className="table-auto">
           <thead>
