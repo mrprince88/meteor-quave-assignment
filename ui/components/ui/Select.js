@@ -154,7 +154,7 @@ export default function SelectComponent({
 }) {
   return (
     <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger className="w-[180px] mb-10">
+      <SelectTrigger className="w-[180px]">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

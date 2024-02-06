@@ -71,17 +71,20 @@ export const App = () => {
 
   return (
     <>
-      <h1 className="text-4xl text-center p-10 font-semibold">
+      <h1 className="text-4xl text-center py-5 font-semibold">
         {Texts.HOME_TITLE}
       </h1>
 
-      <div className="p-10">
-        <SelectComponent
-          value={selectedCommunity}
-          onValueChange={handleCommunityChange}
-          options={communities}
-          placeholder="Select a community"
-        />
+      <div className="px-10 py-5">
+        <div className="text-lg flex items-center my-5">
+          <label className="mr-5 font-semibold">Select a community:</label>
+          <SelectComponent
+            value={selectedCommunity}
+            onValueChange={handleCommunityChange}
+            options={communities}
+            placeholder="Select a community"
+          />
+        </div>
 
         <Statistics communityId={selectedCommunity} />
 
