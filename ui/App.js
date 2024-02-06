@@ -58,6 +58,11 @@ export const App = () => {
     });
   }, []);
 
+  const handleCommunityChange = value => {
+    setSelectedCommunity(value);
+    setCurrentPage(1);
+  };
+
   // return loading if communities are not loaded
   if (!communities.length) {
     console.log('Loading...');
@@ -73,7 +78,7 @@ export const App = () => {
       <div className="p-10">
         <SelectComponent
           value={selectedCommunity}
-          onValueChange={value => setSelectedCommunity(value)}
+          onValueChange={handleCommunityChange}
           options={communities}
           placeholder="Select a community"
         />
