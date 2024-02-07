@@ -31,6 +31,7 @@ const getCounts = communityId => {
 
   return {
     peopleCheckedInCount: peopleCheckedIn.length,
+    // object.entries returns an array of key-value pairs. This is useful for iterating over objects.
     peopleCheckedInByCompany: Object.entries(peopleCheckedInByCompany),
     peopleNotCheckedInCount: peopleNotCheckedInCount,
   };
