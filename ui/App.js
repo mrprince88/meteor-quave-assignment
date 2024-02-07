@@ -77,12 +77,12 @@ export const App = () => {
 
       <div className="px-10 py-5">
         <div className="text-lg flex items-center my-5">
-          <label className="mr-5 font-semibold">Select a community:</label>
+          <label className="mr-5 font-semibold">Select an event:</label>
           <SelectComponent
             value={selectedCommunity}
             onValueChange={handleCommunityChange}
             options={communities}
-            placeholder="Select a community"
+            placeholder="Select an event"
           />
         </div>
 

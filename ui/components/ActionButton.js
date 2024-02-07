@@ -48,7 +48,7 @@ export default function ActionButton({ person }) {
       }
       disabled={buttonDisabled || person.lastCheckOut}
     >
-      {person?.lastCheckIn ? 'Check out' : 'Check in'}
+      {person?.lastCheckIn && !person?.lastCheckOut ? 'Check out' : 'Check in'}
     </button>
   );
 }

@@ -23,31 +23,32 @@ export const DataTable = ({ people }) => {
     <Table className="table-fixed overflow-scroll">
       <TableHeader className="bg-gray-200">
         <TableRow>
-          <TableHead className="w-[200px]">Fist Name</TableHead>
-          <TableHead className="w-[200px]">Last Name</TableHead>
-          <TableHead className="w-[200px]">Role</TableHead>
-          <TableHead className="w-[200px]">Company</TableHead>
-          <TableHead className="w-[200px]">Check in</TableHead>
-          <TableHead className="w-[200px]">Check out</TableHead>
+          <TableHead className="w-[200px]">Full Name</TableHead>
+          <TableHead className="w-[200px]">Company Name</TableHead>
+          <TableHead className="w-[200px]">Title</TableHead>
+          <TableHead className="w-[200px]">Check-in date</TableHead>
+          <TableHead className="w-[200px]">Check-out date</TableHead>
           <TableHead className="w-[200px]">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {people.map(person => (
           <TableRow key={person._id}>
-            <TableCell>{person.firstName}</TableCell>
-            <TableCell>{person.lastName}</TableCell>
-            <TableCell>{person.title ?? '-'}</TableCell>
+            <TableCell>
+              {person.firstName} {person.lastName}
+            </TableCell>
             <TableCell>{person.companyName ?? '-'}</TableCell>
+            <TableCell>{person.title ?? '-'}</TableCell>
             <TableCell>
               {/* convert date to MM/DD/YYYY HH:MM format */}
-
-              {person.lastCheckIn ? formatter.format(person.lastCheckIn) : '-'}
+              {person.lastCheckIn
+                ? formatter.format(person.lastCheckIn)
+                : 'N/A'}
             </TableCell>
             <TableCell>
               {person.lastCheckOut
                 ? formatter.format(person.lastCheckOut)
-                : '-'}
+                : 'N/A'}
             </TableCell>
             <TableCell>
               <ActionButton person={person} />
