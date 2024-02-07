@@ -19,6 +19,7 @@ export default function ActionButton({ person }) {
   }, [person.lastCheckIn]);
 
   const handleButtonClick = (personId, action) => {
+    // disable the button for 5 seconds
     setButtonDisabled(true);
     setTimeout(() => {
       setButtonDisabled(false);
