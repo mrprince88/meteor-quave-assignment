@@ -29,14 +29,16 @@ export default function Statistics({ communityId }) {
   return (
     <div className="text-2xl md:text-lg">
       <h2>People in the event right now: {peopleCheckedInCount}</h2>
-      <h2>
-        People by company in the event right now:
-        {peopleCheckedInByCompany?.map(([company, count], index) => (
-          <span key={company}>{`${
-            index !== 0 ? ', ' : ' '
-          }${company} (${count})`}</span>
-        ))}
-      </h2>
+      {peopleCheckedInByCompany.length !== 0 && (
+        <h2>
+          People by company in the event right now:
+          {peopleCheckedInByCompany?.map(([company, count], index) => (
+            <span key={company}>{`${
+              index !== 0 ? ', ' : ' '
+            }${company} (${count})`}</span>
+          ))}
+        </h2>
+      )}
       <h2>People not checked-in: {peopleNotCheckedInCount}</h2>
     </div>
   );
