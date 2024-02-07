@@ -31,7 +31,7 @@ const getCounts = communityId => {
 
   return {
     peopleCheckedInCount: peopleCheckedIn.length,
-    peopleCheckedInByCompany: peopleCheckedInByCompany,
+    peopleCheckedInByCompany: Object.entries(peopleCheckedInByCompany),
     peopleNotCheckedInCount: peopleNotCheckedInCount,
   };
 };
