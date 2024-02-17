@@ -11,8 +11,8 @@ https://github.com/quavedev/quave-code-challenge-mrprince88/assets/123789913/f6d
 Initial Setup:
 
 - On server, I created Meteor methods to get all communities from the collection.
-- On client, In App.js file in ui folder we call the method and show those communities in a select component.
-- On server, For people list also intially we created a Meteor method to fetch people based on community id.
+- On client, in App.js file in ui folder we call the method and show those communities in a select component.
+- On server, For people list, intially we created a Meteor method to fetch people based on community id.
 - On client, we call the same meteor method to fetch the people when community changes and show data in a table
 
 Once we have the initial setup ready, next steps:
