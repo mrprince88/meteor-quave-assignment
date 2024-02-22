@@ -15,13 +15,14 @@
     "clsx": "^2.1.0",
     "lucide-react": "^0.323.0",
     "meteor-node-stubs": "^1.2.5",
+    "postcss": "^8.4.35",
+    "postcss-load-config": "^5.0.3",
     "prettier": "^1.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.2.1",
-    "tailwindcss-animate": "^1.0.7",
-    "postcss": "^8.4.33",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "meteor": {
     "mainModule": {
