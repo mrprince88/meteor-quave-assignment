@@ -11,6 +11,7 @@
   "dependencies": {
     "@babel/runtime": "^7.21.5",
     "@radix-ui/react-select": "^2.0.0",
+    "autoprefixer": "^10.4.17",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lucide-react": "^0.323.0",
@@ -33,7 +34,6 @@
   "devDependencies": {
     "@quave/eslint-config-quave": "^1.0.7",
     "@testing-library/cypress": "^9.0.0",
-    "autoprefixer": "^10.4.17",
     "babel-eslint": "^8.2.2",
     "cypress": "^12.3.0",
     "eslint": "^4.19.1"
